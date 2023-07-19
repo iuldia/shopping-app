@@ -1,0 +1,25 @@
+<!-- views/main.hbs -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shopping List App</title>
+</head>
+
+<body>
+    <h1>Main Page</h1>
+    {{#if shoppingLists.length}}
+    <p>Number of shopping lists: {{shoppingLists.length}}</p>
+    {{else}}
+    <p>No shopping lists yet.</p>
+    {{/if}}
+
+    {{#if shoppingListItems.length}}
+    <p>Number of shopping list items: {{shoppingListItems.length}}</p>
+    {{/if}}
+
+    <a href="/list">Shopping List</a>
+
+</body>
+
+</html>

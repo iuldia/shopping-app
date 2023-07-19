@@ -1,0 +1,34 @@
+<!-- views/listItem.hbs -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Shopping List App</title>
+  <style type="text/css">
+  .collected {
+      text-decoration: line-through;
+  }
+  </style>
+</head>
+
+<body>
+  <h2>{{shoppingList.name}}</h2>
+  <ul>
+    {{#each shoppingList.items}}
+    <li class="{{#if collected}}collected{{/if}}">
+      {{name}}
+      {{#unless collected}}
+        <a href="/list/{{../shoppingList.id}}/items/{{id}}/collect">collect</a>
+      {{/unless}}
+    </li>
+    {{/each}}
+  </ul>
+  <form action="/list/{{shoppingList.id}}/items" method="POST">
+    <input type="text" name="name" placeholder="Enter a new shopping list item">
+    <button type="submit">Add</button>
+  </form>
+  <a href="/list">Back to Lists</a>
+  <a href="/list/{{shoppingList.id}}/deactivate">Deactivate</a>
+</body>
+
+</html>
