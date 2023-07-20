@@ -35,6 +35,6 @@ router.get('/', shoppingListsController.main);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
-const port = Deno.env.get("PORT") || 7777
+const port = Number(Deno.env.get("PORT")) || 7777
 console.log(`Server running on http://localhost:${port}`);
 await app.listen({ port });
