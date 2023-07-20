@@ -7,7 +7,7 @@ services:
       paths:
         - shopping-lists/**
     buildCommand: curl -fsSL https://deno.land/x/install/install.sh | sh
-    startCommand: cd shopping-lists; export PATH="$DENO_INSTALL/bin:$PATH" && deno run --unstable --allow-net --allow-read --allow-write --allow-env app.js
+    startCommand: export DENO_INSTALL="/opt/render/.deno" && export PATH="$DENO_INSTALL/bin:$PATH" && cd shopping-lists && deno run --unstable --allow-net --allow-read --allow-write --allow-env app.js
     envVars:
       - key: DATABASE_URL
         fromDatabase:
