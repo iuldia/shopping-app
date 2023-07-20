@@ -1,7 +1,16 @@
 # Project 1: Shared shopping list
 
-Write the documentation of your project here. Do not include your personal
-details (e.g. name or student number).
+## Clone the project into your computer
 
-Remember to include the address of the online location where your project is
-running as it is a key part of the submission.
+### `git clone https://github.com/iuldia/shopping-app.git`
+
+### `cd shopping-app`
+
+In the project directory, you can run:
+
+### `docker-compose up -d`
+
+Runs the app in the development mode.\
+Open [http://localhost:7777](http://localhost:7777) to view it in the browser.
+
+The page will reload if you make edits.\

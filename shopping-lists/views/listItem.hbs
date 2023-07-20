@@ -4,31 +4,43 @@
 
 <head>
   <title>Shopping List App</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
   <style type="text/css">
-  .collected {
+    .collected {
       text-decoration: line-through;
-  }
+    }
   </style>
 </head>
 
 <body>
-  <h2>{{shoppingList.name}}</h2>
-  <ul>
-    {{#each shoppingList.items}}
-    <li class="{{#if collected}}collected{{/if}}">
-      {{name}}
-      {{#unless collected}}
-        <a href="/list/{{../shoppingList.id}}/items/{{id}}/collect">collect</a>
-      {{/unless}}
-    </li>
-    {{/each}}
-  </ul>
-  <form action="/list/{{shoppingList.id}}/items" method="POST">
-    <input type="text" name="name" placeholder="Enter a new shopping list item">
-    <button type="submit">Add</button>
-  </form>
-  <a href="/list">Back to Lists</a>
-  <a href="/list/{{shoppingList.id}}/deactivate">Deactivate</a>
+  <div class="container h-100 mt-5">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-6">
+        <div class="form-inline">
+          <h3 class="mr-2">{{shoppingList.name}}</h3>
+          <a href="/list/{{shoppingList.id}}/deactivate" class="btn btn-danger">Deactivate</a>
+        </div>
+        <ul>
+          {{#each shoppingList.items}}
+          <li class="{{#if collected}}collected{{/if}}">
+            {{name}}
+            {{#unless collected}}
+            <a href="/list/{{../shoppingList.id}}/items/{{id}}/collect">collect</a>
+            {{/unless}}
+          </li>
+          {{/each}}
+        </ul>
+        <form action="/list/{{shoppingList.id}}/items" method="POST">
+          <div class="form-group form-inline">
+            <input type="text" name="name" class="form-control mr-2" placeholder="Enter item name">
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+        <a href="/list">Back to Lists</a>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
