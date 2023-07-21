@@ -1,34 +1,41 @@
 // services/shoppingListService.js
-import { shoppingListRepository } from '../repositories/shoppingListRepository.js';
-import { shoppingListItemRepository } from '../repositories/shoppingListItemRepository.js';
+import { dbClient } from '../db/database.js';
+import { shoppingListItemService } from './shoppingListItemService.js';
 
 export const shoppingListService = {
   async getActiveShoppingLists() {
-    return shoppingListRepository.getActiveShoppingLists();
+    const result = await dbClient.queryObject('SELECT * FROM shopping_lists WHERE active = true');
+    return result.rows;
   },
 
   async getAllShoppingLists() {
-    const shoppingLists = await shoppingListRepository.getAllShoppingLists();
-    return shoppingLists;
+    const result = await dbClient.queryArray('SELECT * FROM shopping_lists');
+    return result.rows;
   },
 
   async getShoppingListById(id) {
-    const shoppingList = await shoppingListRepository.getShoppingListById(id);
-
-    if (shoppingList) {
-      const items = await shoppingListItemRepository.getShoppingListItemsByListId(shoppingList.id);
+    const result = await dbClient.queryObject('SELECT * FROM shopping_lists WHERE id = $1', [id]);
+    const shoppingList = result.rows[0];
+    if (result.rows.length !== 0) {
+      const items = await shoppingListItemService.getShoppingListItemsByListId(shoppingList.id);
       shoppingList.items = items;
     }
-
     return shoppingList;
   },
 
   async deactivateShoppingList(id) {
-    const updated = await shoppingListRepository.updateShoppingListStatus(id, false);
-    return updated;
+    const result = await dbClient.queryArray(
+      'UPDATE shopping_lists SET active = $1 WHERE id = $2',
+      [false, id]
+    );
+    return result.rowCount === 1;
   },
 
   async createShoppingList(name) {
-    return shoppingListRepository.createShoppingList(name);
+    const result = await dbClient.queryObject(
+      'INSERT INTO shopping_lists (name, active) VALUES ($1, true) RETURNING *',
+      [name]
+    );
+    return result.rows[0];
   },
 };

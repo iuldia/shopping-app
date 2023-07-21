@@ -1,18 +1,32 @@
 // services/shoppingListItemService.js
-import { shoppingListItemRepository } from '../repositories/shoppingListItemRepository.js';
+import { dbClient } from '../db/database.js';
 
 export const shoppingListItemService = {
   async createShoppingListItem(shoppingListId, name) {
-    return shoppingListItemRepository.createShoppingListItem(shoppingListId, name);
+    const result = await dbClient.queryObject(
+      'INSERT INTO shopping_list_items (shopping_list_id, name, collected) VALUES ($1, $2, false) RETURNING *',
+      [shoppingListId, name]
+    );
+    return result.rows[0];
   },
 
   async collectShoppingListItem(itemId) {
-    const updated = await shoppingListItemRepository.updateShoppingListItemStatus(itemId, true);
-    return updated;
+    const result = await dbClient.queryArray(
+      'UPDATE shopping_list_items SET collected = $1 WHERE id = $2',
+      [true, itemId]
+    );
+    return result.rowCount === 1;
   },
 
   async getAllShoppingListItems() {
-    const shoppingListItems = await shoppingListItemRepository.getAllShoppingListItems();
-    return shoppingListItems;
+    const result = await dbClient.queryArray('SELECT * FROM shopping_list_items');
+    return result.rows;
+  },
+
+  async getShoppingListItemsByListId(shoppingListId) {
+    const result = await dbClient.queryObject(
+      'SELECT * FROM shopping_list_items WHERE shopping_list_id = $1', [shoppingListId]
+    );
+    return result.rows;
   },
 };
